@@ -1,15 +1,18 @@
 {
-  "name": "project",
+  "name": "boiler",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
+  "description": "Boilerplate project using Gulp, Jade, Typescript and Sass.",
+  "keywords": [
+    "gulp",
+    "typescript",
+    "jade",
+    "sass"
+  ],
+  "author": "Alexander Tatchin <alexander.tatchin@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sancau/boiler.git"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
