@@ -1,3 +1,6 @@
 node_modules
-typings
+typings/custom_typings
 builds
+.vscode
+npm-debug.log
+src/.vscode
