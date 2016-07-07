@@ -1,5 +1,7 @@
 var gulp = require('gulp'),
 
+    gls = require('gulp-live-server'),
+
     typescript = require('gulp-typescript'),
     tsConfig = require('./tsconfig.json'),
 
@@ -12,7 +14,7 @@ var devBuildLocation = 'builds/development',
     srcLocation = 'src/';
 
 
-// TYPESCRIPT compilation
+// Typescript compilation
 gulp.task('typescript', function() {
     return gulp.src(srcLocation + '/**/*.ts')
     .pipe(
@@ -57,6 +59,29 @@ gulp.task('collectPublic', function(err){
     .pipe(gulp.dest(devBuildLocation + '/public'));
 });
 
+
+// Gulp live server
+gulp.task('serve', function() {
+    var server = gls.new('builds/development/app.js');
+    server.start();
+
+    gulp.watch([
+        devBuildLocation + '/views/**/*.*', 
+        devBuildLocation + '/public/**/*.*'], function (file) {
+      console.log(`File changed: ${file.path}`);
+      console.log('Reloading browser..');
+      server.notify.apply(server, [file]);
+    });
+    
+    gulp.watch('builds/development/**/*.js', function(file) {
+      console.log(`File changed: ${file.path}`);
+      console.log('Restarting server / Reloading browser..');
+      server.start.bind(server)();    
+      server.notify.apply(server, [file]);
+    });
+});
+
+
 // Task groups
 gulp.task('onTypescriptChange', function(){
     runSequence(
@@ -70,12 +95,18 @@ gulp.task('onTemplateChange', function(){
     );
 });
 
+gulp.task('onPublicChange', function(){
+    runSequence(
+        'collectPublic'
+    ); 
+});
+
 
 // Watchers
-gulp.task('watch', function(){
+gulp.task('watchSource', function(){
     gulp.watch(srcLocation + '/**/*.ts', ['onTypescriptChange']);
     gulp.watch(srcLocation + '/views/**/*.jade', ['onTemplateChange']);
-    gulp.watch(srcLocation + '/public/**/*.*', ['collectPublic'])
+    gulp.watch(srcLocation + '/public/**/*.*', ['onPublicChange']);
 });
 
 
@@ -85,6 +116,7 @@ gulp.task('dev', function(){
         'typescript',
         'templates',
         'collectPublic',
-        'watch'
+        'watchSource',
+        'serve'
     );
 });
