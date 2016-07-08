@@ -1,0 +1,37 @@
+doctype
+html(lang="en")
+head
+  meta(charset="UTF-8")
+  title Express Chat 
+  link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css")
+  link(rel="stylesheet", href="chatStyles.css")
+body
+  .container(ng-app="app" ng-controller="appCtrl")
+    h1 Express Chat
+    
+    hr
+    .form-group
+      label.control-label Your nickname
+      input.form-control(ng-model="username" type="text")
+    
+    pre(ng-show="!messages")
+      | Пока никто ничего не написал..
+    .pre-scrollable(ng-show="messages")
+      div(ng-repeat="message in messages")
+        b {{message.author}} 
+        | {{message.time | date }}: {{message.content}}
+        hr
+        
+
+    .form-group
+      label.control-label New message
+      textarea.form-control(ng-model="newMessage" type="text")
+      
+    button.btn.btn-primary.btn-lg(ng-show="username", ng-click="sendMessage()") Send
+    hr
+
+  script(src="https://code.jquery.com/jquery-2.2.4.js")
+  script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js")
+  script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js")
+  script(src="chat.js")
+  

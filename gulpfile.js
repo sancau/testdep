@@ -73,7 +73,7 @@ gulp.task('serve', function() {
       server.notify.apply(server, [file]);
     });
     
-    gulp.watch('builds/development/**/*.js', function(file) {
+    gulp.watch('builds/development/*.js', function(file) {
       console.log(`File changed: ${file.path}`);
       console.log('Restarting server / Reloading browser..');
       server.start.bind(server)();    
