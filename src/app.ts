@@ -15,11 +15,12 @@ app.use(bp.urlencoded({
   extended: true
 }));
 
-app.get('/', (req: ex.Request, res: ex.Response) => res.render('chat'));
+app.get('/', (req: ex.Request, res: ex.Response) => res.render('markup'));
+app.get('/chat', (req: ex.Request, res: ex.Response) => res.render('chat'));
 
 interface Message {
   author: string;
-  time: Date;
+  time: number;
   content: string;
 }
 
@@ -42,17 +43,20 @@ app.get('/api/chat/messages', function(req: ex.Request, res: ex.Response) {
     });
 });
 
-
 app.post('/api/chat/messages',
   function (req: ex.Request, res: ex.Response) {
-    let newMessage = {
-      author: req.body.username,
-      time: Date.now().toString(),
-      content: req.body.content
+    try {
+      let newMessage: Message = {
+        author: <string>req.body.username,
+        time: Date.now(),
+        content: <string>req.body.content
+      }
+      appendMessage(newMessage)     
+      res.send({code: 200});     
+    } catch (Error) {
+      console.log(Error.message);
+      res.send({code: 403});
     }
-    appendMessage(newMessage)
-
-    res.send({code: 200});
   } 
 );
 
